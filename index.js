@@ -2,7 +2,7 @@ const contactsApi = require('./contacts');
 const argv = require("yargs").argv;
 
 
-async function invokeAction({ action, id, name, email, phone }) {
+async function invokeAction({ action, id, name, email, phone }) {  
   switch (action) {
     case "list":
           const contacts = await contactsApi.listContacts();
@@ -10,7 +10,7 @@ async function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case "get":
-          const contact = await contactsApi.getContactById(id);
+          const contact = await contactsApi.getContactById(id.toString());
           if (!contact)
               throw new Error(`Contact with id=${id} is not found!`);
           console.log(contact);
@@ -22,8 +22,8 @@ async function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case "remove":
-          const deleteContact = await contactsApi.removeContact(id);
-          if (!contact)
+          const deleteContact = await contactsApi.removeContact(id.toString());
+          if (!deleteContact)
               throw new Error(`Contact with id=${id} is not found!`);
           console.log(deleteContact);
       break;
@@ -34,3 +34,4 @@ async function invokeAction({ action, id, name, email, phone }) {
 }
 
 invokeAction(argv);
+//console.log(argv)
