@@ -2,16 +2,15 @@ const fs = require('fs/promises');
 const path = require('path');
 const { v4 } = require("uuid");
 
- const contactsPath = path.join(__dirname,'db','contacts.json');
+const contactsPath = path.join(__dirname,'db','contacts.json');
 
-
-// TODO: задокументировать каждую функцию
+/* Returns a list of all contacts */
 async function listContacts() {
   const data = await fs.readFile(contactsPath);
   const contacts = JSON.parse(data);
   return contacts;
 }
-
+/* Returns a contact by the given ID - string type */
 async function getContactById(contactId) {
   const contacts = await listContacts();  
   const contact = contacts.find(item => item.id === contactId);
@@ -19,7 +18,7 @@ async function getContactById(contactId) {
     return null;
   return contact;
 }
-
+/* Deletes contact by given ID - string type */
 async function removeContact(contactId) {
   const contacts = await listContacts();
   const ind = contacts.findIndex(item => item.id === contactId);
@@ -29,7 +28,7 @@ async function removeContact(contactId) {
   await fs.writeFile(contactsPath,JSON.stringify(contacts));
   return deleteContact;
 }
-
+/* Adds a new contact. Arguments: name - string type, email - string type, phone - string type */
 async function addContact({name, email, phone}) {
   const contacts = await listContacts();
   const newContact = { id: v4(), name, email, phone };
